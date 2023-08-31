@@ -6,7 +6,6 @@ import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import config from '../../config';
 import { IGenericErrorMessage } from '../../interfaces/error';
 import handleValidationError from '../../Errors/handelValidationError';
-import handleCastError from '../../Errors/handelClientError';
 import ApiError from '../../Errors/ApiError';
 import handelClientError from '../../Errors/handelClientError';
 import { Prisma } from '@prisma/client';
