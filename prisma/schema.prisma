@@ -11,40 +11,56 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-  name String
-  email String @unique
-  password String
-  role String
-  contactNo String
-  address String
-  profileImg String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  password         String
+  role             String
+  contactNo        String
+  address          String
+  profileImg       String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  reviewAndRatings ReviewAndRating[]
 
   @@map("users")
 }
 
-
 model Category {
-  id String @id @default(uuid())
+  id    String @id @default(uuid())
   title String
   books Book[]
+
   @@map("categories")
 }
 
-
 model Book {
-  id String @id @default(uuid())
-  title String
-  author String
-  price Int
-  genre String
-  publicationDate DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String            @id @default(uuid())
+  title            String
+  author           String
+  price            Int
+  genre            String
+  publicationDate  DateTime
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  reviewAndRatings ReviewAndRating[]
+
   categoryId String
-  category              Category                @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
 
   @@map("books")
+}
+
+model ReviewAndRating {
+  id        String   @id @default(uuid())
+  review    String
+  rating    Int
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  bookId    String
+  book      Book     @relation(fields: [bookId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("review_and_ratings")
 }
