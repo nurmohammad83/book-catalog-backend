@@ -6,7 +6,7 @@ import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import config from '../../config';
 import { IGenericErrorMessage } from '../../interfaces/error';
 import handleValidationError from '../../Errors/handelValidationError';
-import handleCastError from '../../Errors/handelCastError';
+import handleCastError from '../../Errors/handelClientError';
 import ApiError from '../../Errors/ApiError';
 
 const globalErrorHandler: ErrorRequestHandler = (
