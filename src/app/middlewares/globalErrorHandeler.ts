@@ -8,6 +8,10 @@ import { IGenericErrorMessage } from '../../interfaces/error';
 import handleValidationError from '../../Errors/handelValidationError';
 import handleCastError from '../../Errors/handelClientError';
 import ApiError from '../../Errors/ApiError';
+import handelClientError from '../../Errors/handelClientError';
+import { Prisma } from '@prisma/client';
+import handleZodError from '../../Errors/handelZodError';
+import { ZodError } from 'zod';
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,
@@ -16,20 +20,25 @@ const globalErrorHandler: ErrorRequestHandler = (
   next: NextFunction
 ) => {
   config.env === 'development'
-    ? console.log(` globalErrorHandler ~~`, { error })
-    : console.log(` globalErrorHandler ~~`, error);
+    ? console.log(`🐱‍🏍 globalErrorHandler ~~`, { error })
+    : console.error(`🐱‍🏍 globalErrorHandler ~~`, error);
 
   let statusCode = 500;
   let message = 'Something went wrong !';
   let errorMessages: IGenericErrorMessage[] = [];
 
-  if (error?.name === 'ValidationError') {
+  if (error instanceof Prisma.PrismaClientValidationError) {
     const simplifiedError = handleValidationError(error);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
-  } else if (error?.name === 'CastError') {
-    const simplifiedError = handleCastError(error);
+  } else if (error instanceof ZodError) {
+    const simplifiedError = handleZodError(error);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorMessages = simplifiedError.errorMessages;
+  } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    const simplifiedError = handelClientError(error);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
@@ -55,6 +64,7 @@ const globalErrorHandler: ErrorRequestHandler = (
         ]
       : [];
   }
+
   res.status(statusCode).json({
     success: false,
     message,
