@@ -3,7 +3,7 @@ import { CategoryController } from './category.controller';
 
 const router = express.Router();
 
-router.post('/', CategoryController.insertIntoDb);
+router.post('/create-category', CategoryController.insertIntoDb);
 router.get('/', CategoryController.getAllFromDb);
 router.get('/:id', CategoryController.getByIdFromDb);
 router.delete('/:id', CategoryController.deleteByIdFromDb);
