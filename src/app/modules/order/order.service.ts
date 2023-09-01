@@ -1,7 +1,9 @@
-import { Order } from '@prisma/client';
+import { Order, Role } from '@prisma/client';
 import prisma from '../../../shared/prisma';
 import { IOrderResponse } from './order.interface';
 import { JwtPayload } from 'jsonwebtoken';
+import ApiError from '../../../Errors/ApiError';
+import httpStatus from 'http-status';
 
 const createOrder = async (
   user: JwtPayload | null,
@@ -25,12 +27,23 @@ const getAllFromDb = async (): Promise<Order[] | null> => {
 const getOrderByCustomerFromDb = async (
   user: JwtPayload | null
 ): Promise<Order[] | null> => {
-  // if (Role.customer !== user?.userId) {
-  //   throw new ApiError(httpStatus.BAD_REQUEST, 'Your not customer');
-  // }
   const result = await prisma.order.findMany({
     where: {
       userId: user?.userId,
+    },
+  });
+  return result;
+};
+const getOrderByIdFromDb = async (
+  id: string,
+  user: JwtPayload | null
+): Promise<Order | null> => {
+  if (user?.role === Role.customer && user?.userId !== id) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Order Not found!');
+  }
+  const result = await prisma.order.findUnique({
+    where: {
+      id,
     },
   });
   return result;
@@ -40,4 +53,5 @@ export const OrderService = {
   createOrder,
   getAllFromDb,
   getOrderByCustomerFromDb,
+  getOrderByIdFromDb,
 };

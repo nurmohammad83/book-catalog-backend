@@ -26,7 +26,6 @@ const getAllFromDb = catchAsync(async (req: Request, res: Response) => {
 const getOrderByCustomerFromDb = catchAsync(
   async (req: Request, res: Response) => {
     const user = req.user;
-    console.log(user);
     const result = await OrderService.getOrderByCustomerFromDb(user);
     sendResponse(res, {
       success: true,
@@ -36,9 +35,21 @@ const getOrderByCustomerFromDb = catchAsync(
     });
   }
 );
+const getOrderByIdFromDb = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = req.user;
+  const result = await OrderService.getOrderByIdFromDb(id, user);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Order fetched successfully',
+    data: result,
+  });
+});
 
 export const OrderController = {
   createOrder,
   getAllFromDb,
   getOrderByCustomerFromDb,
+  getOrderByIdFromDb,
 };

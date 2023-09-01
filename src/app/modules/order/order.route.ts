@@ -10,6 +10,13 @@ router.post(
   auth(ENUM_USER_ROLE.CUSTOMER),
   OrderController.createOrder
 );
+
+router.get(
+  '/:orderId',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CUSTOMER),
+  OrderController.getOrderByIdFromDb
+);
+
 router.get(
   '/customer',
   auth(ENUM_USER_ROLE.CUSTOMER),
