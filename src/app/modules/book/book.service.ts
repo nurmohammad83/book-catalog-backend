@@ -13,7 +13,7 @@ import {
   bookRelationalFieldsMapper,
 } from './book.constants';
 
-const insertIntoDb = async (data: Book) => {
+const insertIntoDb = async (data: Book): Promise<Book | null> => {
   const isCategoryExist = await prisma.category.findFirst({
     where: {
       id: data.categoryId,

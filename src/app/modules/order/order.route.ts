@@ -1,0 +1,20 @@
+import express from 'express';
+import { OrderController } from './order.controller';
+import auth from '../../middlewares/auth';
+import { ENUM_USER_ROLE } from '../../../enums/user';
+
+const router = express.Router();
+
+router.post(
+  '/create-order',
+  auth(ENUM_USER_ROLE.CUSTOMER),
+  OrderController.createOrder
+);
+router.get(
+  '/customer',
+  auth(ENUM_USER_ROLE.CUSTOMER),
+  OrderController.getOrderByCustomerFromDb
+);
+router.get('/', auth(ENUM_USER_ROLE.ADMIN), OrderController.getAllFromDb);
+
+export const OrderRoutes = router;

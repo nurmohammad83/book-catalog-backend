@@ -46,7 +46,6 @@ model Book {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   reviewAndRatings ReviewAndRating[]
-  orderedBooks     OrderedBook[]
   categoryId       String
   category         Category          @relation(fields: [categoryId], references: [id])
 
@@ -71,22 +70,12 @@ model Order {
   id           String        @id @default(uuid())
   userId       String
   user         User          @relation(fields: [userId], references: [id])
-  orderedBooks OrderedBook[]
+  orderedBooks  Json[]
   status       OrderStatus   @default(pending)
-
+  createdAt DateTime @default(now())
   @@map("orders")
 }
 
-model OrderedBook {
-  id       String @id @default(uuid())
-  quantity Int
-  orderId  String
-  order    Order  @relation(fields: [orderId], references: [id])
-  bookId   String
-  book     Book   @relation(fields: [bookId], references: [id])
-
-  @@map("ordered_books")
-}
 
 enum OrderStatus {
   pending

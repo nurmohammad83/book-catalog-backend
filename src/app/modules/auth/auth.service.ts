@@ -8,7 +8,7 @@ import ApiError from '../../../Errors/ApiError';
 import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
 
-const insertIntoDb = async (userData: User) => {
+const insertIntoDb = async (userData: User): Promise<User> => {
   userData.password = await bcrypt.hash(
     userData.password,
     Number(config.bcrypt_salt_rounds)
