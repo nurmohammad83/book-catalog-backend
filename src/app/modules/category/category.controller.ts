@@ -8,7 +8,7 @@ const insertIntoDb = catchAsync(async (req: Request, res: Response) => {
   const result = await CategoryService.insertIntoDb(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'Category create successfully',
+    message: 'Category created successfully',
     success: true,
     data: result,
   });
@@ -18,7 +18,7 @@ const getAllFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await CategoryService.getAllFromDb();
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'categories retrieved successfully',
+    message: 'Categories fetched successfully',
     success: true,
     data: result,
   });
@@ -28,7 +28,7 @@ const getByIdFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await CategoryService.getByIdFromDb(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'category retrieved successfully',
+    message: 'Category fetched successfully',
     success: true,
     data: result,
   });
@@ -40,7 +40,7 @@ const updateByIdFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await CategoryService.updateByIdFromDb(id, data);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'category update successfully',
+    message: 'Category updated successfully',
     success: true,
     data: result,
   });
@@ -50,7 +50,7 @@ const deleteByIdFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await CategoryService.deleteByIdFromDb(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'category delete successfully',
+    message: 'Category deleted successfully',
     success: true,
     data: result,
   });

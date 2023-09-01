@@ -8,7 +8,7 @@ const getAllFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getAllFromDb();
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'users retrieved successfully',
+    message: 'Users retrieved successfully',
     success: true,
     data: result,
   });
@@ -18,7 +18,7 @@ const getByIdFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getByIdFromDb(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'user retrieved successfully',
+    message: 'User fetched successfully',
     success: true,
     data: result,
   });
@@ -30,7 +30,7 @@ const updateByIdFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.updateByIdFromDb(id, data);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'user update successfully',
+    message: 'User updated successfully',
     success: true,
     data: result,
   });
@@ -40,7 +40,7 @@ const deleteByIdFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.deleteByIdFromDb(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'user delete successfully',
+    message: 'Users deleted successfully',
     success: true,
     data: result,
   });

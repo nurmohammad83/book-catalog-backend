@@ -1,6 +1,6 @@
 type IPaginationOption = {
   page?: number;
-  limit?: number;
+  size?: number;
   sortOrder?: 'asc' | 'desc';
   sortBy?: string;
   minPrice?: number;

@@ -1,9 +1,22 @@
 import { Book } from '@prisma/client';
 import prisma from '../../../shared/prisma';
+import ApiError from '../../../Errors/ApiError';
+import httpStatus from 'http-status';
 
 const insertIntoDb = async (data: Book) => {
+  const isCategoryExist = await prisma.category.findFirst({
+    where: {
+      id: data.categoryId,
+    },
+  });
+  if (!isCategoryExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Category data are not exist!');
+  }
   const result = await prisma.book.create({
     data,
+    include: {
+      category: true,
+    },
   });
   return result;
 };

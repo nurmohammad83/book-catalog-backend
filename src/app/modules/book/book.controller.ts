@@ -8,7 +8,7 @@ const insertIntoDb = catchAsync(async (req: Request, res: Response) => {
   const result = await BookService.insertIntoDb(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'Book create successfully',
+    message: 'Book created successfully',
     success: true,
     data: result,
   });
@@ -18,7 +18,7 @@ const getAllFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await BookService.getAllFromDb();
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'Books retrieved successfully',
+    message: 'Books fetched successfully',
     success: true,
     data: result,
   });

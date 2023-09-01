@@ -8,7 +8,7 @@ const insertIntoDb = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.insertIntoDb(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'user create successfully',
+    message: 'User created successfully!',
     success: true,
     data: result,
   });
