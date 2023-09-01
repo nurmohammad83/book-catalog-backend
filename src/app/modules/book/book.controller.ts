@@ -29,11 +29,23 @@ const getAllFromDb = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getByCategoryFromDb = catchAsync(async (req: Request, res: Response) => {
+  const { categoryId } = req.params;
+  const options = pick(req.query, paginationFields);
+  const result = await BookService.getByCategoryFromDb(categoryId, options);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    message: 'Books with associated category data fetched successfully',
+    success: true,
+    data: result,
+  });
+});
+
 const getByIdFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await BookService.getByIdFromDb(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'Book retrieved successfully',
+    message: 'Book fetched successfully',
     success: true,
     data: result,
   });
@@ -45,7 +57,7 @@ const updateByIdFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await BookService.updateByIdFromDb(id, data);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'Book update successfully',
+    message: 'Book updated successfully',
     success: true,
     data: result,
   });
@@ -55,7 +67,7 @@ const deleteByIdFromDb = catchAsync(async (req: Request, res: Response) => {
   const result = await BookService.deleteByIdFromDb(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'Book delete successfully',
+    message: 'Book is deleted successfully',
     success: true,
     data: result,
   });
@@ -65,6 +77,7 @@ export const BookController = {
   getAllFromDb,
   getByIdFromDb,
   updateByIdFromDb,
+  getByCategoryFromDb,
   deleteByIdFromDb,
   insertIntoDb,
 };
