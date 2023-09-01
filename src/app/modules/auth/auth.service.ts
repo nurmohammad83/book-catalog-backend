@@ -44,13 +44,13 @@ const loginUser = async (
   const accessToken = jwtHelpers.createToken(
     { userEmail, role },
     config.jwt.secret as Secret,
-    config.jwt.expires_in as string
+    config.jwt.expires_in as number | string
   );
 
   const refreshToken = jwtHelpers.createToken(
     { userEmail, role },
     config.jwt.refresh_secret as Secret,
-    config.jwt.refresh_expires_in as string
+    config.jwt.refresh_expires_in as number | string
   );
 
   return {
