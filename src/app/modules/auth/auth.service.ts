@@ -21,7 +21,7 @@ const insertIntoDb = async (userData: User) => {
 
 const loginUser = async (
   payload: ILoginUser
-): Promise<{ accessToken: string; refreshToken: string }> => {
+): Promise<{ token: string; refreshToken: string }> => {
   const { email, password } = payload;
 
   const isUserExist = await prisma.user.findUnique({
@@ -39,22 +39,22 @@ const loginUser = async (
   }
 
   // access token and refresh token
-  const userEmail = isUserExist?.email;
+  const userId = isUserExist?.id;
   const role = isUserExist?.role;
-  const accessToken = jwtHelpers.createToken(
-    { userEmail, role },
+  const token = jwtHelpers.createToken(
+    { userId, role },
     config.jwt.secret as Secret,
     config.jwt.expires_in as number | string
   );
 
   const refreshToken = jwtHelpers.createToken(
-    { userEmail, role },
+    { userId, role },
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as number | string
   );
 
   return {
-    accessToken,
+    token,
     refreshToken,
   };
 };
