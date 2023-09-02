@@ -38,15 +38,25 @@ const getOrderByIdFromDb = async (
   id: string,
   user: JwtPayload | null
 ): Promise<Order | null> => {
-  if (user?.role !== Role.customer) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Forbidden');
+  console.log(user);
+  if (user?.role === Role.admin) {
+    const result = await prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+    return result;
+  } else if (user?.role === Role.customer) {
+    const result = await prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (result?.userId !== user.userId) {
+      throw new ApiError(httpStatus.FORBIDDEN, 'Sorry!. You have no order!');
+    }
+    return result;
   }
-  const result = await prisma.order.findUnique({
-    where: {
-      id,
-    },
-  });
-  return result;
 };
 
 export const OrderService = {

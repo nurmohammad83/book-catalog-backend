@@ -17,11 +17,6 @@ router.get(
   OrderController.getOrderByIdFromDb
 );
 
-// router.get(
-//   '/',
-//   auth(ENUM_USER_ROLE.CUSTOMER),
-//   OrderController.getOrderByCustomerFromDb
-// );
 router.get(
   '/',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CUSTOMER),
