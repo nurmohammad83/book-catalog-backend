@@ -6,14 +6,14 @@ import { jwtHelpers } from '../../../helper/jwtHelpers';
 import { ILoginResponse, ILoginUser } from './auth.interface';
 import ApiError from '../../../Errors/ApiError';
 import httpStatus from 'http-status';
-import bcrypt from 'bcrypt';
+// import bcrypt from 'bcrypt';
 import { UserData } from '../users/user.interface';
 
 const insertIntoDb = async (userData: User): Promise<UserData | null> => {
-  userData.password = await bcrypt.hash(
-    userData.password,
-    Number(config.bcrypt_salt_rounds)
-  );
+  // userData.password = await bcrypt.hash(
+  //   userData.password,
+  //   Number(config.bcrypt_salt_rounds)
+  // );
   const result = await prisma.user.create({
     data: userData,
     select: {
@@ -42,11 +42,14 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginResponse> => {
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found!');
   }
-  const isMatchPass = await bcrypt.compare(password, isUserExist?.password);
-  if (isUserExist?.password && !isMatchPass) {
+  // const isMatchPass = await bcrypt.compare(password, isUserExist?.password);
+  // if (isUserExist?.password && !isMatchPass) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'Incorrect password!');
+  // }
+
+  if (isUserExist.password !== password) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Incorrect password!');
   }
-
   // access token and refresh token
   const userId = isUserExist?.id;
   const role = isUserExist?.role;

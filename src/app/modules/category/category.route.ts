@@ -10,13 +10,16 @@ router.post(
   auth(ENUM_USER_ROLE.ADMIN),
   CategoryController.insertIntoDb
 );
+
 router.get('/', CategoryController.getAllFromDb);
 router.get('/:id', CategoryController.getByIdFromDb);
+
 router.delete(
   '/:id',
   auth(ENUM_USER_ROLE.ADMIN),
   CategoryController.deleteByIdFromDb
 );
+
 router.patch(
   '/:id',
   auth(ENUM_USER_ROLE.ADMIN),
