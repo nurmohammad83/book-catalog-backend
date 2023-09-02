@@ -17,11 +17,15 @@ router.get(
   OrderController.getOrderByIdFromDb
 );
 
+// router.get(
+//   '/',
+//   auth(ENUM_USER_ROLE.CUSTOMER),
+//   OrderController.getOrderByCustomerFromDb
+// );
 router.get(
-  '/customer',
-  auth(ENUM_USER_ROLE.CUSTOMER),
-  OrderController.getOrderByCustomerFromDb
+  '/',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CUSTOMER),
+  OrderController.getAllFromDb
 );
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), OrderController.getAllFromDb);
 
 export const OrderRoutes = router;

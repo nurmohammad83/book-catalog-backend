@@ -19,27 +19,27 @@ const createOrder = async (
   return result;
 };
 
-const getAllFromDb = async (): Promise<Order[] | null> => {
-  const result = await prisma.order.findMany();
-  return result;
-};
-
-const getOrderByCustomerFromDb = async (
+const getAllFromDb = async (
   user: JwtPayload | null
-): Promise<Order[] | null> => {
-  const result = await prisma.order.findMany({
-    where: {
-      userId: user?.userId,
-    },
-  });
-  return result;
+): Promise<Order[] | void> => {
+  if (user?.role === Role.admin) {
+    const result = await prisma.order.findMany();
+    return result;
+  } else if (user?.role === Role.customer) {
+    const result = await prisma.order.findMany({
+      where: {
+        userId: user?.userId,
+      },
+    });
+    return result;
+  }
 };
 const getOrderByIdFromDb = async (
   id: string,
   user: JwtPayload | null
 ): Promise<Order | null> => {
-  if (user?.role === Role.customer && user?.userId !== id) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Order Not found!');
+  if (user?.role !== Role.customer) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Forbidden');
   }
   const result = await prisma.order.findUnique({
     where: {
@@ -52,6 +52,5 @@ const getOrderByIdFromDb = async (
 export const OrderService = {
   createOrder,
   getAllFromDb,
-  getOrderByCustomerFromDb,
   getOrderByIdFromDb,
 };
