@@ -3,25 +3,34 @@ import prisma from '../../../shared/prisma';
 import config from '../../../config';
 import { Secret } from 'jsonwebtoken';
 import { jwtHelpers } from '../../../helper/jwtHelpers';
-import { ILoginUser } from './auth.interface';
+import { ILoginResponse, ILoginUser } from './auth.interface';
 import ApiError from '../../../Errors/ApiError';
 import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
+import { UserData } from '../users/user.interface';
 
-const insertIntoDb = async (userData: User): Promise<User> => {
+const insertIntoDb = async (userData: User): Promise<UserData | null> => {
   userData.password = await bcrypt.hash(
     userData.password,
     Number(config.bcrypt_salt_rounds)
   );
   const result = await prisma.user.create({
     data: userData,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      password: false,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
   });
   return result;
 };
 
-const loginUser = async (
-  payload: ILoginUser
-): Promise<{ token: string; refreshToken: string }> => {
+const loginUser = async (payload: ILoginUser): Promise<ILoginResponse> => {
   const { email, password } = payload;
 
   const isUserExist = await prisma.user.findUnique({

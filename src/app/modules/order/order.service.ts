@@ -37,8 +37,7 @@ const getAllFromDb = async (
 const getOrderByIdFromDb = async (
   id: string,
   user: JwtPayload | null
-): Promise<Order | null> => {
-  console.log(user);
+): Promise<Order | null | undefined> => {
   if (user?.role === Role.admin) {
     const result = await prisma.order.findUnique({
       where: {
